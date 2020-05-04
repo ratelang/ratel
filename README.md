@@ -34,7 +34,7 @@ It's not clear how exactly this will be done but one approach that is
 currently considered involves modifying `vyper`'s compilation phase such
 that `vyper`'s compiler produces the usual expected `vyper` output, and in
 addition `ratel`'s ABI and bytecode. The total output can be then passed to
-a HonerBadgerMPC application that will consume the output such that the
+a HoneyBadgerMPC application that will consume the output such that the
 smart contract ABI and bytecode will be used to interact with the contract
 on Ethereum meanwhile the MPC program ABI and bytecode will be used to execute
 the MPC program.
