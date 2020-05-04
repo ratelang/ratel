@@ -5,7 +5,7 @@ Ratel is a research project.
 The current focus is to extend an existing smart contract programming
 language such that it can support the writing of MPC (multi-party computation)
 programs. Roughly speaking, `ratel`'s current goal is simply to be a kind of
-hybrid language that would allow an programmer to write the smart contract
+hybrid language that would allow a programmer to write the smart contract
 part and MPC part in one language, one file.
 
 When compiling a `ratel` program, the output would be in two main parts:
