@@ -1,5 +1,5 @@
 # ratel
-Ratel is a research project.
+Ratel is an experimental project for the purpose of research work.
 
 ## Rough Idea
 The current focus is to extend an existing smart contract programming
