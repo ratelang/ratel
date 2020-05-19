@@ -19,11 +19,11 @@ the targeted blockchain and to interact with it.
 The MPC program ABI and bytecode is meant to be passed to an MPC application
 that would execute the MPC program.
 
-For the near term, the MPC ABI can be parsed by an MPC application which will
-then execute the corresponding program.
+For the near term, the MPC program ast or source code can be parsed by an MPC
+application which will then execute the corresponding program.
 
 Eventually, assuming that an MPC framework would have a virtual machine, then
-the bytecode would be passed to that virtual machine.
+the abi & bytecode would be passed to that virtual machine.
 
 ## Implementation
 In terms of implementation, the current goal is to extend the Ethereum's
@@ -33,8 +33,8 @@ definitions.
 It's not clear how exactly this will be done but one approach that is
 currently considered involves modifying `vyper`'s compilation phase such
 that `vyper`'s compiler produces the usual expected `vyper` output, and in
-addition `ratel`'s ABI and bytecode. The total output can be then passed to
-a HoneyBadgerMPC application that will consume the output such that the
-smart contract ABI and bytecode will be used to interact with the contract
-on Ethereum meanwhile the MPC program ABI and bytecode will be used to execute
-the MPC program.
+addition the `mpc`'s ABI and bytecode or for now just the source code or ast.
+The total output can be then passed to a HoneyBadgerMPC application that will
+consume the output such that the smart contract ABI and bytecode will be used
+to interact with the contract on Ethereum meanwhile the MPC program ABI and
+bytecode (or source code / ast for now) will be used to execute the MPC program.
