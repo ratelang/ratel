@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-install_requires = ["astunparse", "vyper @ git+https://github.com/vyperlang/vyper.git"]
+install_requires = ["astunparse", "vyper~=0.2"]
 
 dev_requires = ["ipdb", "ipython"]
 docs_requires = ["Sphinx"]

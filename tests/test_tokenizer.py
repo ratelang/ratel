@@ -8,7 +8,7 @@ except ImportError:
 
 import pytest
 
-from vyper.ast.pre_parser import pre_parse
+# XXX from vyper.ast.pre_parser import pre_parse
 from vyper import compiler as vyper_compiler
 
 
@@ -26,9 +26,13 @@ def contract_bytecode(contract_code):
 
 @pytest.fixture
 def pythonized_contract_code(contract_code):
-    class_types, pythonized_code = pre_parse(contract_code)
+    from ratl.legacy_vyper_pre_parser import pre_parse
+
+    object_types, m_offsets, pythonized_code = pre_parse(contract_code)
+    breakpoint()
     ast_unparsed = unparse(ast.parse(pythonized_code))
-    return class_types, ast_unparsed
+    breakpoint()
+    return object_types, m_offsets, ast_unparsed
 
 
 def test_vyperize(pythonized_contract_code, contract_bytecode):
@@ -45,7 +49,7 @@ def test_vyperize(pythonized_contract_code, contract_bytecode):
     """
     from ratl.tokenizer import vyperize
 
-    class_types, pythonized_code = pythonized_contract_code
-    vyperized_code = vyperize(pythonized_code, class_types=class_types)
+    object_types, m_offsets, pythonized_code = pythonized_contract_code
+    vyperized_code = vyperize(pythonized_code, object_types=object_types)
     bytecode = vyper_compiler.compile_code(vyperized_code, ("bytecode",))["bytecode"]
     assert bytecode == contract_bytecode

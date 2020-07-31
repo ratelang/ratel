@@ -7,10 +7,11 @@ except ImportError:
     # Python version < 3.9
     from astunparse import unparse
 
-from vyper.ast.pre_parser import pre_parse
+# XXX from vyper.ast.pre_parser import pre_parse
 from vyper import compiler as vyper_compiler
 from vyper.opcodes import DEFAULT_EVM_VERSION
 
+from .legacy_vyper_pre_parser import pre_parse
 from .tokenizer import vyperize
 
 # TODO figure out how to get an AST object from the mpc nodes extracted out
@@ -68,10 +69,11 @@ class RatelCompiler:
         self._mpc_code = None
 
     def _pythonize(self, contract_source):
-        class_types, reformatted_code = pre_parse(contract_source)
+        object_types, m_offsets, reformatted_code = pre_parse(contract_source)
         self._pythonized_code = reformatted_code
-        self._metadata["class_types"] = class_types
-        return class_types, reformatted_code
+        self._metadata["object_types"] = object_types
+        self._metadata["m_offsets"] = m_offsets
+        return object_types, reformatted_code
 
     def _parse(self, code):
         self._code_tree = ast.parse(code)
@@ -82,16 +84,16 @@ class RatelCompiler:
         self._mpc_code_tree = self.node_transformer.mpc_module
         return tree
 
-    def _recover_vyper_code(self, pythonized_vyper_code, class_types):
-        return vyperize(pythonized_vyper_code, class_types=class_types)
+    def _recover_vyper_code(self, pythonized_vyper_code, object_types):
+        return vyperize(pythonized_vyper_code, object_types=object_types)
 
     def _extract_codes(self, contract_source):
-        class_types, reformatted_code = self._pythonize(contract_source)
+        object_types, reformatted_code = self._pythonize(contract_source)
         self._code_tree = self._parse(reformatted_code)
         self._vyper_code_tree = copy.deepcopy(self._code_tree)
         self._transform(self._vyper_code_tree)
         pythonized_vyper_code = unparse(self._vyper_code_tree)
-        self._vyper_code = self._recover_vyper_code(pythonized_vyper_code, class_types)
+        self._vyper_code = self._recover_vyper_code(pythonized_vyper_code, object_types)
         self._mpc_code = unparse(self._mpc_code_tree)
         return self._vyper_code, self._mpc_code
 
